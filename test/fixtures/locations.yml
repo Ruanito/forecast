@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  zipcode: "12345"
+  lat: 9.99
+  lng: 9.99
+
+two:
+  zipcode: "23456"
+  lat: 9.99
+  lng: 9.99

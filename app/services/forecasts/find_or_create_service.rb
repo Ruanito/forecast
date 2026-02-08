@@ -2,21 +2,16 @@
 
 module Forecasts
   class FindOrCreateService
-    def initialize(address)
-      @address = address
+    def initialize(zipcode)
+      @zipcode = zipcode
     end
 
     def call
-      geocode = Http::GoogleGeocodingClient.new.geocode(@address)
-
-      raise NotFoundError, "Address not found: #{@address}" if geocode["status"] == "ZERO_RESULTS"
+      address = Address::FindOrFetchService.new(@zipcode).call
+      weather = Weather::FindOrFetchService.new(address).call
 
       {
-        low: rand(10..20),
-        high: rand(20..30),
-        description: "Sunny with a chance of rain",
-        cache: false,
-        geocode: geocode
+        weather: weather
       }
     end
   end
