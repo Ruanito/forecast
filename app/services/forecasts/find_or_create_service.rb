@@ -7,12 +7,14 @@ module Forecasts
     end
 
     def call
-      address = Address::FindOrFetchService.new(@zipcode).call
-      weather = Weather::FindOrFetchService.new(address).call
+      Rails.cache.fetch("forecasts_#{@zipcode}", expires_in: 30.minutes) do
+        address = Address::FindOrFetchService.new(@zipcode).call
+        weather = Weather::FindOrFetchService.new(address).call
 
-      {
-        weather: weather
-      }
+        {
+          weather: weather
+        }
+      end
     end
   end
 end
