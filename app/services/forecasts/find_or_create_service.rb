@@ -7,11 +7,16 @@ module Forecasts
     end
 
     def call
+      geocode = Http::GoogleGeocodingClient.new.geocode(@address)
+
+      raise NotFoundError, "Address not found: #{@address}" if geocode["status"] == "ZERO_RESULTS"
+
       {
         low: rand(10..20),
         high: rand(20..30),
         description: "Sunny with a chance of rain",
-        cache: false
+        cache: false,
+        geocode: geocode
       }
     end
   end
